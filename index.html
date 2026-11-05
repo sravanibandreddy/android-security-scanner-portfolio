@@ -1,603 +1,263 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Android Security Scanner - An Android application for analyzing installed apps, APK files and PDF documents.">
-    <meta name="theme-color" content="#080d1c">
-    <title>Android Security Scanner | Sravani Bandreddy</title>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <style>
-        :root {
-            --bg: #080d1c;
-            --panel: #111a30;
-            --blue: #4f8cff;
-            --purple: #9870ff;
-            --text: #f4f7ff;
-            --muted: #a5b0c7;
-            --border: rgba(255, 255, 255, .10);
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            scroll-behavior: smooth;
-        }
-
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'Inter', sans-serif;
-            line-height: 1.7;
-        }
-
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
-
-        .container {
-            width: min(1120px, 90%);
-            margin: auto;
-        }
-
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            background: rgba(8, 13, 28, .92);
-            backdrop-filter: blur(15px);
-            border-bottom: 1px solid var(--border);
-        }
-
-        nav {
-            min-height: 76px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .logo {
-            font-size: 19px;
-            font-weight: 800;
-        }
-
-        .logo span {
-            color: var(--blue);
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 27px;
-            list-style: none;
-            font-size: 13px;
-            color: var(--muted);
-        }
-
-        .nav-links a:hover {
-            color: white;
-        }
-
-        .hero {
-            min-height: 620px;
-            display: grid;
-            grid-template-columns: 1.2fr .8fr;
-            align-items: center;
-            gap: 55px;
-            padding-top: 70px;
-            padding-bottom: 70px;
-        }
-
-        .tag {
-            display: inline-block;
-            padding: 7px 14px;
-            border: 1px solid rgba(79, 140, 255, .35);
-            border-radius: 30px;
-            background: rgba(79, 140, 255, .10);
-            color: #9dbdff;
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 24px;
-        }
-
-        h1 {
-            font-size: clamp(38px, 5.5vw, 65px);
-            line-height: 1.12;
-            letter-spacing: -2px;
-            margin-bottom: 22px;
-        }
-
-        .gradient {
-            background: linear-gradient(100deg, #62a2ff, #b28aff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-
-        .hero p {
-            color: var(--muted);
-            max-width: 590px;
-            font-size: 15px;
-            margin-bottom: 30px;
-        }
-
-        .buttons {
-            display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 13px 21px;
-            border-radius: 9px;
-            font-size: 13px;
-            font-weight: 700;
-            transition: .25s;
-        }
-
-        .btn-primary {
-            background: linear-gradient(110deg, var(--blue), var(--purple));
-            color: white;
-        }
-
-        .btn-secondary {
-            border: 1px solid var(--border);
-            color: white;
-        }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            filter: brightness(1.12);
-        }
-
-        .hero-visual {
-            min-height: 330px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-        }
-
-        .shield {
-            width: 230px;
-            height: 260px;
-            display: grid;
-            place-items: center;
-            font-size: 105px;
-            background: linear-gradient(145deg, rgba(79, 140, 255, .20), rgba(152, 112, 255, .12));
-            border: 1px solid rgba(130, 160, 255, .3);
-            border-radius: 48% 48% 45% 45%;
-            box-shadow: 0 0 90px rgba(79, 140, 255, .17);
-        }
-
-        .floating {
-            position: absolute;
-            background: #15213b;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 12px 16px;
-            font-size: 12px;
-            box-shadow: 0 10px 35px rgba(0, 0, 0, .25);
-        }
-
-        .float-one {
-            top: 45px;
-            right: 0;
-        }
-
-        .float-two {
-            bottom: 40px;
-            left: 0;
-        }
-
-        section {
-            padding: 90px 0;
-            border-top: 1px solid var(--border);
-        }
-
-        .section-heading {
-            text-align: center;
-            margin-bottom: 45px;
-        }
-
-        .section-heading h2 {
-            font-size: 34px;
-            margin-bottom: 10px;
-        }
-
-        .section-heading p {
-            color: var(--muted);
-            font-size: 14px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-        }
-
-        .card {
-            padding: 26px;
-            background: linear-gradient(145deg, #121d35, #0e162a);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            transition: .25s;
-        }
-
-        .card:hover {
-            transform: translateY(-5px);
-            border-color: rgba(79, 140, 255, .55);
-        }
-
-        .card-icon {
-            font-size: 30px;
-            margin-bottom: 15px;
-        }
-
-        .card h3 {
-            font-size: 17px;
-            margin-bottom: 10px;
-        }
-
-        .card p {
-            color: var(--muted);
-            font-size: 13px;
-        }
-
-        .about-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 35px;
-            align-items: center;
-        }
-
-        .about-panel {
-            padding: 32px;
-            background: var(--panel);
-            border: 1px solid var(--border);
-            border-radius: 17px;
-        }
-
-        .about-panel p {
-            color: var(--muted);
-            font-size: 14px;
-        }
-
-        .about-panel h3 {
-            margin-bottom: 15px;
-        }
-
-        .tech-list {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 11px;
-            margin-top: 20px;
-        }
-
-        .tech {
-            padding: 8px 13px;
-            background: rgba(79, 140, 255, .10);
-            border: 1px solid rgba(79, 140, 255, .22);
-            color: #b4ccff;
-            border-radius: 7px;
-            font-size: 12px;
-        }
-
-        .download-panel {
-            text-align: center;
-            padding: 55px 25px;
-            border: 1px solid rgba(112, 140, 255, .3);
-            border-radius: 22px;
-            background: linear-gradient(130deg, #14294a, #21183e);
-        }
-
-        .download-panel h2 {
-            font-size: 32px;
-            margin-bottom: 13px;
-        }
-
-        .download-panel p {
-            color: #c0cbe0;
-            margin-bottom: 25px;
-            font-size: 14px;
-        }
-
-        .download-note {
-            font-size: 11px !important;
-            margin-top: 18px;
-            margin-bottom: 0 !important;
-        }
-
-        .contact {
-            text-align: center;
-        }
-
-        .contact p {
-            color: var(--muted);
-            margin-bottom: 20px;
-        }
-
-        .contact a:not(.btn) {
-            color: #8eb4ff;
-        }
-
-        footer {
-            padding: 28px 0;
-            border-top: 1px solid var(--border);
-            text-align: center;
-            color: var(--muted);
-            font-size: 12px;
-        }
-
-        @media(max-width: 760px) {
-
-            .hero,
-            .about-layout {
-                grid-template-columns: 1fr;
-            }
-
-            .hero {
-                text-align: center;
-                gap: 15px;
-            }
-
-            .hero p {
-                margin-left: auto;
-                margin-right: auto;
-            }
-
-            .buttons {
-                justify-content: center;
-            }
-
-            .grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nav-links {
-                gap: 12px;
-                font-size: 11px;
-            }
-
-            .logo {
-                font-size: 15px;
-            }
-
-            .shield {
-                width: 190px;
-                height: 220px;
-                font-size: 85px;
-            }
-
-            .section-heading h2 {
-                font-size: 28px;
-            }
-        }
-
-        @media(max-width: 430px) {
-            nav {
-                flex-direction: column;
-                padding: 15px 0;
-            }
-
-            .nav-links {
-                flex-wrap: wrap;
-                justify-content: center;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080d1c">
+  <meta name="description" content="Sravani Bandreddy — AI & ML student and developer. Explore Android Security Scanner, AI projects, skills, internships and contact details.">
+  <title>Sravani Bandreddy | AI & ML Developer Portfolio</title>
+  <style>
+    :root {
+      --bg: #080d1c; --panel: #101a30; --panel2: #0d1528; --text: #edf3ff;
+      --muted: #aab7d0; --line: rgba(165,190,235,.16); --blue: #71a7ff;
+      --violet: #a78bfa; --cyan: #67e8f9; --green: #86efac;
+      --max: 1120px; --radius: 22px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0; color: var(--text); background:
+        radial-gradient(ellipse at 80% 0%, rgba(88,89,210,.20), transparent 36%),
+        radial-gradient(ellipse at 0% 28%, rgba(35,123,190,.13), transparent 32%), var(--bg);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.65;
+    }
+    a { color: inherit; text-decoration: none; }
+    a:hover { color: var(--cyan); }
+    .wrap { width: min(var(--max), calc(100% - 40px)); margin: auto; }
+    .nav { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(18px); background: rgba(8,13,28,.82); border-bottom: 1px solid var(--line); }
+    .nav-inner { min-height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+    .brand { font-weight: 800; letter-spacing: -.04em; font-size: 1.1rem; }
+    .brand span { color: var(--blue); }
+    .nav-links { display: flex; flex-wrap: wrap; gap: 22px; color: var(--muted); font-size: .9rem; }
+    .hero { padding: 92px 0 76px; display: grid; grid-template-columns: 1.25fr .75fr; align-items: center; gap: 54px; }
+    .eyebrow { color: var(--cyan); text-transform: uppercase; letter-spacing: .16em; font-size: .75rem; font-weight: 800; }
+    h1 { font-size: clamp(2.7rem, 6vw, 5rem); line-height: 1.04; letter-spacing: -.065em; margin: 16px 0 20px; }
+    h1 span { background: linear-gradient(100deg, var(--blue), var(--violet), var(--cyan)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .lead { color: var(--muted); font-size: 1.1rem; max-width: 650px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 30px; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; padding: 12px 18px; border-radius: 12px; border: 1px solid var(--line); font-weight: 700; font-size: .92rem; transition: transform .2s, border-color .2s; }
+    .btn:hover { transform: translateY(-2px); border-color: var(--blue); }
+    .primary { background: linear-gradient(110deg, #397be8, #7859d8); border: 0; color: white; }
+    .visual { border: 1px solid rgba(151,178,232,.22); border-radius: 28px; padding: 20px; background: linear-gradient(145deg, rgba(22,36,66,.96), rgba(12,20,39,.96)); box-shadow: 0 25px 80px rgba(0,0,0,.28); transform: rotate(1deg); }
+    .visual-top { display: flex; justify-content: space-between; align-items: center; color: var(--muted); font-size: .78rem; padding-bottom: 16px; border-bottom: 1px solid var(--line); }
+    .dot { display: inline-block; width: 8px; height: 8px; background: var(--green); border-radius: 50%; margin-right: 7px; box-shadow: 0 0 12px var(--green); }
+    .scan-icon { width: 74px; height: 74px; border-radius: 20px; display: grid; place-items: center; margin: 25px auto 16px; background: linear-gradient(145deg, #347fe9, #7957d7); font-size: 2.2rem; box-shadow: 0 12px 30px rgba(70,110,230,.3); }
+    .visual h3 { text-align: center; margin: 0; font-size: 1.2rem; }
+    .visual p { text-align: center; color: var(--muted); font-size: .82rem; margin: 4px 0 22px; }
+    .scan-row { display: flex; justify-content: space-between; gap: 12px; padding: 12px; border-radius: 12px; background: rgba(255,255,255,.045); margin-top: 9px; font-size: .82rem; }
+    .scan-row span:last-child { color: var(--green); }
+    section { padding: 66px 0; scroll-margin-top: 76px; }
+    .section-head { margin-bottom: 28px; }
+    .section-head h2 { font-size: clamp(1.8rem, 3.5vw, 2.55rem); letter-spacing: -.045em; margin: 6px 0; }
+    .section-head p { color: var(--muted); margin: 0; max-width: 720px; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 18px; }
+    .card { background: linear-gradient(150deg, rgba(17,28,51,.96), rgba(12,20,38,.96)); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px; }
+    .card h3 { margin: 0 0 8px; font-size: 1.12rem; }
+    .card p { color: var(--muted); margin: 0 0 14px; }
+    .tag-list { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .tag { color: #c9d8f3; border: 1px solid rgba(133,166,224,.2); background: rgba(103,145,220,.08); border-radius: 999px; padding: 5px 10px; font-size: .76rem; }
+    .project-feature { display: grid; grid-template-columns: 1.15fr .85fr; gap: 24px; align-items: center; }
+    .project-feature .card { height: 100%; }
+    .feature-list { padding-left: 19px; color: var(--muted); }
+    .feature-list li { margin: 7px 0; }
+    .callout { padding: 18px; background: rgba(93,145,235,.08); border: 1px solid rgba(113,167,255,.2); border-radius: 16px; color: #dce8ff; margin-top: 16px; font-size: .9rem; }
+    .skill-grid { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 14px; }
+    .skill { padding: 19px; border-radius: 16px; background: rgba(16,26,48,.8); border: 1px solid var(--line); }
+    .skill strong { display: block; margin-bottom: 6px; }
+    .skill p { color: var(--muted); font-size: .9rem; margin: 0; }
+    .timeline { display: grid; gap: 16px; }
+    .timeline-item { border-left: 2px solid rgba(113,167,255,.5); padding: 2px 0 4px 20px; }
+    .timeline-item .meta { color: var(--cyan); font-size: .82rem; font-weight: 700; }
+    .timeline-item h3 { margin: 5px 0; }
+    .timeline-item p { color: var(--muted); margin: 0; }
+    .contact { text-align: center; padding: 42px; border-radius: 26px; border: 1px solid var(--line); background: linear-gradient(120deg, rgba(48,91,165,.18), rgba(115,76,190,.16)); }
+    .contact p { color: var(--muted); }
+    footer { border-top: 1px solid var(--line); padding: 24px 0 34px; color: var(--muted); font-size: .85rem; text-align: center; }
+    .small-note { color: var(--muted); font-size: .82rem; margin-top: 16px; }
+    @media (max-width: 800px) {
+      .hero, .project-feature { grid-template-columns: 1fr; }
+      .hero { padding-top: 62px; gap: 35px; }
+      .visual { max-width: 520px; width: 100%; margin: auto; }
+      .skill-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
+      .nav-inner { align-items: flex-start; padding: 16px 0; flex-direction: column; }
+      .nav-links { gap: 14px; }
+    }
+    @media (max-width: 560px) {
+      .wrap { width: min(100% - 28px, var(--max)); }
+      .grid, .skill-grid { grid-template-columns: 1fr; }
+      section { padding: 48px 0; }
+      .hero { padding: 52px 0; }
+      .contact { padding: 28px 18px; }
+    }
+  </style>
 </head>
-
 <body>
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="brand" href="#home">SRAVANI<span>.</span></a>
+      <nav class="nav-links" aria-label="Main navigation">
+        <a href="#about">About</a><a href="#projects">Projects</a><a href="#skills">Skills</a>
+        <a href="#experience">Experience</a><a href="#education">Education</a><a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
 
-    <header>
-        <nav class="container">
-            <a href="#home" class="logo">🛡️ Security<span>Scanner</span></a>
-            <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#about">Technology</a></li>
-                <li><a href="#download">Download</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-
-        <section class="container hero" id="home">
-            <div>
-                <span class="tag">ANDROID SECURITY PROJECT · VERSION 1.0.0</span>
-
-                <h1>
-                    Smarter Mobile<br>
-                    <span class="gradient">Security Analysis.</span>
-                </h1>
-
-                <p>
-                    Android Security Scanner is an Android application designed
-                    to analyze installed applications, user-selected APK files
-                    and PDF documents, with security-related findings and
-                    downloadable scan reports.
-                </p>
-
-                <div class="buttons">
-                    <a class="btn btn-primary"
-                        href="https://github.com/sravanibandreddy/android-security-scanner-downloads/releases/download/v1.0.0/app-release.apk">
-                        Download APK ↓
-                    </a>
-
-                    <a class="btn btn-secondary"
-                        href="https://github.com/sravanibandreddy/android-security-scanner-downloads" target="_blank"
-                        rel="noopener noreferrer">
-                        View GitHub ↗
-                    </a>
-                </div>
-            </div>
-
-            <div class="hero-visual">
-                <div class="shield">🛡️</div>
-                <div class="floating float-one">🔍 Application Analysis</div>
-                <div class="floating float-two">📄 PDF Security Scanning</div>
-            </div>
-        </section>
-
-        <section id="features">
-            <div class="container">
-                <div class="section-heading">
-                    <h2>Application <span class="gradient">Features</span></h2>
-                    <p>Core capabilities of Android Security Scanner.</p>
-                </div>
-
-                <div class="grid">
-                    <article class="card">
-                        <div class="card-icon">📱</div>
-                        <h3>Installed App Scanning</h3>
-                        <p>Analyze installed Android applications and display security-related findings.</p>
-                    </article>
-
-                    <article class="card">
-                        <div class="card-icon">📦</div>
-                        <h3>APK Analysis</h3>
-                        <p>Select an APK file and inspect its available application and DEX-related information.</p>
-                    </article>
-
-                    <article class="card">
-                        <div class="card-icon">📄</div>
-                        <h3>PDF Scanning</h3>
-                        <p>Analyze user-selected PDF documents for security-related concerns.</p>
-                    </article>
-
-                    <article class="card">
-                        <div class="card-icon">📊</div>
-                        <h3>PDF Reports</h3>
-                        <p>Generate and export scan reports for later reference.</p>
-                    </article>
-
-                    <article class="card">
-                        <div class="card-icon">🔒</div>
-                        <h3>Local File Processing</h3>
-                        <p>Selected files are processed locally using the application's scanning workflow.</p>
-                    </article>
-
-                    <article class="card">
-                        <div class="card-icon">⚡</div>
-                        <h3>Resource Limits</h3>
-                        <p>File-size and processing limits help manage scanning resources.</p>
-                    </article>
-                </div>
-            </div>
-        </section>
-
-        <section id="about">
-            <div class="container">
-                <div class="section-heading">
-                    <h2>Project <span class="gradient">Overview</span></h2>
-                    <p>Development approach and technology stack.</p>
-                </div>
-
-                <div class="about-layout">
-                    <div class="about-panel">
-                        <h3>About the Project</h3>
-                        <p>
-                            Android Security Scanner is a mobile application project
-                            focused on Android application analysis and document
-                            security inspection. It combines Android development,
-                            file processing and security-oriented analysis in one
-                            application.
-                        </p>
-                        <br>
-                        <p>
-                            The application was built, digitally signed and tested
-                            on a physical Android phone and an Android emulator.
-                        </p>
-                    </div>
-
-                    <div class="about-panel">
-                        <h3>Technologies Used</h3>
-                        <p>Tools and libraries used in the project.</p>
-
-                        <div class="tech-list">
-                            <span class="tech">Kotlin</span>
-                            <span class="tech">Android Studio</span>
-                            <span class="tech">Jetpack Compose</span>
-                            <span class="tech">Material 3</span>
-                            <span class="tech">PDFBox Android</span>
-                            <span class="tech">DEXLib2</span>
-                            <span class="tech">Gradle</span>
-                            <span class="tech">R8</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section id="download">
-            <div class="container">
-                <div class="download-panel">
-                    <h2>Get <span class="gradient">Android Security Scanner</span></h2>
-                    <p>
-                        Download version 1.0.0 for compatible Android devices.
-                    </p>
-
-                    <a class="btn btn-primary"
-                        href="https://github.com/sravanibandreddy/android-security-scanner-downloads/releases/download/v1.0.0/app-release.apk">
-                        Download APK
-                    </a>
-
-                    <p class="download-note">
-                        Android APK · GitHub distribution · Version 1.0.0
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <section id="contact">
-            <div class="container contact">
-                <div class="section-heading">
-                    <h2>Developer <span class="gradient">Contact</span></h2>
-                    <p>Project developed by Sravani Bandreddy.</p>
-                </div>
-
-                <p>Email:
-                    <a href="mailto:sravanibandreddy30@gmail.com">
-                        sravanibandreddy30@gmail.com
-                    </a>
-                </p>
-
-                <div class="buttons" style="justify-content:center">
-                    <a class="btn btn-secondary" href="https://github.com/sravanibandreddy" target="_blank"
-                        rel="noopener noreferrer">
-                        GitHub Profile
-                    </a>
-
-                    <a class="btn btn-secondary"
-                        href="https://sravanibandreddy.github.io/android-security-scanner-privacy/" target="_blank"
-                        rel="noopener noreferrer">
-                        Privacy Policy
-                    </a>
-                </div>
-            </div>
-        </section>
-
-    </main>
-
-    <footer>
-        <div class="container">
-            <p>© 2026 Sravani Bandreddy · Android Security Scanner</p>
-            <p>Security analysis results are informational and do not guarantee that a file is completely safe.</p>
+  <main>
+    <div class="wrap hero" id="home">
+      <div>
+        <div class="eyebrow">AI &amp; ML Student · Developer</div>
+        <h1>Building useful ideas with <span>intelligent technology.</span></h1>
+        <p class="lead">I'm Sravani Bandreddy, an Artificial Intelligence and Machine Learning undergraduate interested in AI-powered applications, Android development, automation and practical software solutions.</p>
+        <div class="actions">
+          <a class="btn primary" href="#projects">Explore my work</a>
+          <a class="btn" href="mailto:sravanibandreddy30@gmail.com">Contact me</a>
+          <a class="btn" href="https://github.com/sravanibandreddy" target="_blank" rel="noopener">GitHub profile ↗</a>
         </div>
-    </footer>
+      </div>
+      <aside class="visual" aria-label="Illustrative Android Security Scanner project preview">
+        <div class="visual-top"><span>PROJECT SPOTLIGHT</span><span><i class="dot"></i>Version 1.0.0</span></div>
+        <div class="scan-icon" aria-hidden="true">⌁</div>
+        <h3>Android Security Scanner</h3>
+        <p>Android application security analysis</p>
+        <div class="scan-row"><span>Installed app scan</span><span>Available</span></div>
+        <div class="scan-row"><span>APK analysis</span><span>Available</span></div>
+        <div class="scan-row"><span>PDF scanning</span><span>Available</span></div>
+        <div class="scan-row"><span>PDF report export</span><span>Available</span></div>
+        <div class="small-note">Illustrative project preview — not an actual app screenshot.</div>
+      </aside>
+    </div>
 
+    <section id="about">
+      <div class="wrap">
+        <div class="section-head"><div class="eyebrow">A little about me</div><h2>Curious learner. Practical builder.</h2>
+          <p>I enjoy learning how technology works and turning that knowledge into projects. My interests include intelligent systems, secure applications, web development and automation.</p></div>
+        <div class="grid">
+          <article class="card"><h3>What I focus on</h3><p>Developing projects that combine software engineering with AI, automation and user-friendly interfaces.</p></article>
+          <article class="card"><h3>How I work</h3><p>I like breaking complex problems into manageable steps, testing features and improving a project through hands-on learning.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section id="projects">
+      <div class="wrap">
+        <div class="section-head"><div class="eyebrow">Selected work</div><h2>Projects</h2><p>A selection of application development, AI and automation work.</p></div>
+        <div class="project-feature">
+          <article class="card">
+            <div class="eyebrow">Featured project · Android</div>
+            <h3>Android Security Scanner</h3>
+            <p>An Android application designed to help users inspect installed applications, selected APK files and PDF documents, with report export functionality.</p>
+            <ul class="feature-list">
+              <li>Installed application scanning and selected APK analysis</li>
+              <li>PDF scanning and PDF report export</li>
+              <li>Jetpack Compose interface with Material 3</li>
+              <li>File-size and processing safeguards</li>
+              <li>Designed for local processing of selected files</li>
+            </ul>
+            <div class="tag-list"><span class="tag">Kotlin</span><span class="tag">Jetpack Compose</span><span class="tag">PDFBox Android</span><span class="tag">DEX analysis</span></div>
+            <div class="actions">
+              <a class="btn primary" href="https://github.com/sravanibandreddy/android-security-scanner-downloads" target="_blank" rel="noopener">Project &amp; releases ↗</a>
+              <a class="btn" href="https://sravanibandreddy.github.io/android-security-scanner-privacy/" target="_blank" rel="noopener">Privacy policy ↗</a>
+            </div>
+          </article>
+          <article class="card">
+            <div class="eyebrow">AI · Document processing</div>
+            <h3>AI Document Scanner</h3>
+            <p>A document scanning and text extraction application concept using image processing and OCR, with a web API and document preview workflow.</p>
+            <div class="tag-list"><span class="tag">Python</span><span class="tag">OpenCV</span><span class="tag">Tesseract OCR</span><span class="tag">FastAPI</span></div>
+          </article>
+        </div>
+        <div class="grid" style="margin-top:18px">
+          <article class="card">
+            <h3>SignBridge AI</h3>
+            <p>An Indian Sign Language recognition project exploring hand-landmark based gesture classification and speech output to support communication.</p>
+            <div class="tag-list"><span class="tag">Python</span><span class="tag">MediaPipe</span><span class="tag">OpenCV</span><span class="tag">Text-to-speech</span></div>
+          </article>
+          <article class="card">
+            <h3>BlockQuest</h3>
+            <p>A blockchain-based adventure and farming game developed during an internship, using backend services and Ethereum test-network transactions.</p>
+            <div class="tag-list"><span class="tag">Java</span><span class="tag">Spring Boot</span><span class="tag">Web3j</span><span class="tag">Ethereum</span></div>
+          </article>
+          <article class="card">
+            <h3>Web Development Projects</h3>
+            <p>Practice projects including a personal portfolio, editable to-do application, music player and fitness website.</p>
+            <div class="tag-list"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">Local Storage</span></div>
+          </article>
+          <article class="card">
+            <h3>Deep Guard — Deepfake Detection</h3>
+            <p>A project concept focused on explainable deepfake detection and identifying likely manipulation types rather than returning only a real-or-fake label.</p>
+            <div class="tag-list"><span class="tag">AI / ML</span><span class="tag">Explainable AI</span><span class="tag">Computer Vision</span></div>
+          </article>
+        </div>
+        <p class="small-note">Some projects are learning or development work and may still be in progress. Project descriptions reflect their intended scope.</p>
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="wrap">
+        <div class="section-head"><div class="eyebrow">Technologies &amp; tools</div><h2>Skills</h2><p>Tools and areas I have worked with through coursework, practice and projects.</p></div>
+        <div class="skill-grid">
+          <div class="skill"><strong>Programming</strong><p>Python, Java, C</p></div>
+          <div class="skill"><strong>Web development</strong><p>HTML, CSS, JavaScript, React.js, Node.js</p></div>
+          <div class="skill"><strong>Android development</strong><p>Kotlin, Android Studio, Jetpack Compose</p></div>
+          <div class="skill"><strong>AI &amp; machine learning</strong><p>Computer vision, OCR, model workflows, Generative AI</p></div>
+          <div class="skill"><strong>Blockchain</strong><p>Ethereum, Web3j, smart contract concepts</p></div>
+          <div class="skill"><strong>Tools &amp; platforms</strong><p>Git, GitHub, VS Code, FastAPI, OpenCV</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="wrap">
+        <div class="section-head"><div class="eyebrow">Hands-on learning</div><h2>Internship experience</h2></div>
+        <div class="timeline">
+          <article class="timeline-item">
+            <div class="meta">May 2025 – August 2025 · Remote</div>
+            <h3>Java Blockchain Developer Intern — HashBells Pvt. Ltd.</h3>
+            <p>Worked on Java-based blockchain application modules, DApp concepts, smart-contract interactions and backend API integration. Contributed to the BlockQuest project using Spring Boot, Web3j and an Ethereum test network.</p>
+          </article>
+          <article class="timeline-item">
+            <div class="meta">Web development internship</div>
+            <h3>HexSoftwares</h3>
+            <p>Built web development practice projects including a portfolio website, to-do application, music player and fitness website.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="education">
+      <div class="wrap">
+        <div class="section-head"><div class="eyebrow">Academic background</div><h2>Education</h2></div>
+        <div class="grid">
+          <article class="card">
+            <div class="meta">2023 – 2027</div>
+            <h3>B.Tech — Artificial Intelligence and Machine Learning</h3>
+            <p>Aditya University</p>
+          </article>
+          <article class="card">
+            <h3>Intermediate</h3><p>Sri Aadya Junior College · 85%</p>
+            <h3 style="margin-top:18px">Secondary education</h3><p>Narayana · 10 CGPA</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="wrap">
+        <div class="contact">
+          <div class="eyebrow">Let's connect</div>
+          <h2>Have a project or opportunity in mind?</h2>
+          <p>Feel free to reach out about internships, entry-level opportunities, collaborations or technology projects.</p>
+          <div class="actions" style="justify-content:center">
+            <a class="btn primary" href="mailto:sravanibandreddy30@gmail.com">Email me</a>
+            <a class="btn" href="https://www.linkedin.com/in/sravani-b-87b451293/" target="_blank" rel="noopener">LinkedIn ↗</a>
+            <a class="btn" href="https://github.com/sravanibandreddy" target="_blank" rel="noopener">GitHub ↗</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer><div class="wrap">© 2026 Sravani Bandreddy · Built with HTML, CSS and curiosity.</div></footer>
 </body>
-
 </html>
