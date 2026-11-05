@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Android Security Scanner - An Android application for analyzing installed apps, APK files and PDF documents.">
+    <meta name="theme-color" content="#080d1c">
+    <title>Android Security Scanner | Sravani Bandreddy</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg: #080d1c;
+            --panel: #111a30;
+            --blue: #4f8cff;
+            --purple: #9870ff;
+            --text: #f4f7ff;
+            --muted: #a5b0c7;
+            --border: rgba(255, 255, 255, .10);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            line-height: 1.7;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .container {
+            width: min(1120px, 90%);
+            margin: auto;
+        }
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(8, 13, 28, .92);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        nav {
+            min-height: 76px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .logo {
+            font-size: 19px;
+            font-weight: 800;
+        }
+
+        .logo span {
+            color: var(--blue);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 27px;
+            list-style: none;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+        .hero {
+            min-height: 620px;
+            display: grid;
+            grid-template-columns: 1.2fr .8fr;
+            align-items: center;
+            gap: 55px;
+            padding-top: 70px;
+            padding-bottom: 70px;
+        }
+
+        .tag {
+            display: inline-block;
+            padding: 7px 14px;
+            border: 1px solid rgba(79, 140, 255, .35);
+            border-radius: 30px;
+            background: rgba(79, 140, 255, .10);
+            color: #9dbdff;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: clamp(38px, 5.5vw, 65px);
+            line-height: 1.12;
+            letter-spacing: -2px;
+            margin-bottom: 22px;
+        }
+
+        .gradient {
+            background: linear-gradient(100deg, #62a2ff, #b28aff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        .hero p {
+            color: var(--muted);
+            max-width: 590px;
+            font-size: 15px;
+            margin-bottom: 30px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 13px 21px;
+            border-radius: 9px;
+            font-size: 13px;
+            font-weight: 700;
+            transition: .25s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(110deg, var(--blue), var(--purple));
+            color: white;
+        }
+
+        .btn-secondary {
+            border: 1px solid var(--border);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.12);
+        }
+
+        .hero-visual {
+            min-height: 330px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .shield {
+            width: 230px;
+            height: 260px;
+            display: grid;
+            place-items: center;
+            font-size: 105px;
+            background: linear-gradient(145deg, rgba(79, 140, 255, .20), rgba(152, 112, 255, .12));
+            border: 1px solid rgba(130, 160, 255, .3);
+            border-radius: 48% 48% 45% 45%;
+            box-shadow: 0 0 90px rgba(79, 140, 255, .17);
+        }
+
+        .floating {
+            position: absolute;
+            background: #15213b;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 12px;
+            box-shadow: 0 10px 35px rgba(0, 0, 0, .25);
+        }
+
+        .float-one {
+            top: 45px;
+            right: 0;
+        }
+
+        .float-two {
+            bottom: 40px;
+            left: 0;
+        }
+
+        section {
+            padding: 90px 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .section-heading {
+            text-align: center;
+            margin-bottom: 45px;
+        }
+
+        .section-heading h2 {
+            font-size: 34px;
+            margin-bottom: 10px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .card {
+            padding: 26px;
+            background: linear-gradient(145deg, #121d35, #0e162a);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            transition: .25s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(79, 140, 255, .55);
+        }
+
+        .card-icon {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .card h3 {
+            font-size: 17px;
+            margin-bottom: 10px;
+        }
+
+        .card p {
+            color: var(--muted);
+            font-size: 13px;
+        }
+
+        .about-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 35px;
+            align-items: center;
+        }
+
+        .about-panel {
+            padding: 32px;
+            background: var(--panel);
+            border: 1px solid var(--border);
+            border-radius: 17px;
+        }
+
+        .about-panel p {
+            color: var(--muted);
+            font-size: 14px;
+        }
+
+        .about-panel h3 {
+            margin-bottom: 15px;
+        }
+
+        .tech-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 11px;
+            margin-top: 20px;
+        }
+
+        .tech {
+            padding: 8px 13px;
+            background: rgba(79, 140, 255, .10);
+            border: 1px solid rgba(79, 140, 255, .22);
+            color: #b4ccff;
+            border-radius: 7px;
+            font-size: 12px;
+        }
+
+        .download-panel {
+            text-align: center;
+            padding: 55px 25px;
+            border: 1px solid rgba(112, 140, 255, .3);
+            border-radius: 22px;
+            background: linear-gradient(130deg, #14294a, #21183e);
+        }
+
+        .download-panel h2 {
+            font-size: 32px;
+            margin-bottom: 13px;
+        }
+
+        .download-panel p {
+            color: #c0cbe0;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        .download-note {
+            font-size: 11px !important;
+            margin-top: 18px;
+            margin-bottom: 0 !important;
+        }
+
+        .contact {
+            text-align: center;
+        }
+
+        .contact p {
+            color: var(--muted);
+            margin-bottom: 20px;
+        }
+
+        .contact a:not(.btn) {
+            color: #8eb4ff;
+        }
+
+        footer {
+            padding: 28px 0;
+            border-top: 1px solid var(--border);
+            text-align: center;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        @media(max-width: 760px) {
+
+            .hero,
+            .about-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .hero {
+                text-align: center;
+                gap: 15px;
+            }
+
+            .hero p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .buttons {
+                justify-content: center;
+            }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav-links {
+                gap: 12px;
+                font-size: 11px;
+            }
+
+            .logo {
+                font-size: 15px;
+            }
+
+            .shield {
+                width: 190px;
+                height: 220px;
+                font-size: 85px;
+            }
+
+            .section-heading h2 {
+                font-size: 28px;
+            }
+        }
+
+        @media(max-width: 430px) {
+            nav {
+                flex-direction: column;
+                padding: 15px 0;
+            }
+
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <nav class="container">
+            <a href="#home" class="logo">🛡️ Security<span>Scanner</span></a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#about">Technology</a></li>
+                <li><a href="#download">Download</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+
+        <section class="container hero" id="home">
+            <div>
+                <span class="tag">ANDROID SECURITY PROJECT · VERSION 1.0.0</span>
+
+                <h1>
+                    Smarter Mobile<br>
+                    <span class="gradient">Security Analysis.</span>
+                </h1>
+
+                <p>
+                    Android Security Scanner is an Android application designed
+                    to analyze installed applications, user-selected APK files
+                    and PDF documents, with security-related findings and
+                    downloadable scan reports.
+                </p>
+
+                <div class="buttons">
+                    <a class="btn btn-primary"
+                        href="https://github.com/sravanibandreddy/android-security-scanner-downloads/releases/download/v1.0.0/app-release.apk">
+                        Download APK ↓
+                    </a>
+
+                    <a class="btn btn-secondary"
+                        href="https://github.com/sravanibandreddy/android-security-scanner-downloads" target="_blank"
+                        rel="noopener noreferrer">
+                        View GitHub ↗
+                    </a>
+                </div>
+            </div>
+
+            <div class="hero-visual">
+                <div class="shield">🛡️</div>
+                <div class="floating float-one">🔍 Application Analysis</div>
+                <div class="floating float-two">📄 PDF Security Scanning</div>
+            </div>
+        </section>
+
+        <section id="features">
+            <div class="container">
+                <div class="section-heading">
+                    <h2>Application <span class="gradient">Features</span></h2>
+                    <p>Core capabilities of Android Security Scanner.</p>
+                </div>
+
+                <div class="grid">
+                    <article class="card">
+                        <div class="card-icon">📱</div>
+                        <h3>Installed App Scanning</h3>
+                        <p>Analyze installed Android applications and display security-related findings.</p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-icon">📦</div>
+                        <h3>APK Analysis</h3>
+                        <p>Select an APK file and inspect its available application and DEX-related information.</p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-icon">📄</div>
+                        <h3>PDF Scanning</h3>
+                        <p>Analyze user-selected PDF documents for security-related concerns.</p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-icon">📊</div>
+                        <h3>PDF Reports</h3>
+                        <p>Generate and export scan reports for later reference.</p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-icon">🔒</div>
+                        <h3>Local File Processing</h3>
+                        <p>Selected files are processed locally using the application's scanning workflow.</p>
+                    </article>
+
+                    <article class="card">
+                        <div class="card-icon">⚡</div>
+                        <h3>Resource Limits</h3>
+                        <p>File-size and processing limits help manage scanning resources.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="container">
+                <div class="section-heading">
+                    <h2>Project <span class="gradient">Overview</span></h2>
+                    <p>Development approach and technology stack.</p>
+                </div>
+
+                <div class="about-layout">
+                    <div class="about-panel">
+                        <h3>About the Project</h3>
+                        <p>
+                            Android Security Scanner is a mobile application project
+                            focused on Android application analysis and document
+                            security inspection. It combines Android development,
+                            file processing and security-oriented analysis in one
+                            application.
+                        </p>
+                        <br>
+                        <p>
+                            The application was built, digitally signed and tested
+                            on a physical Android phone and an Android emulator.
+                        </p>
+                    </div>
+
+                    <div class="about-panel">
+                        <h3>Technologies Used</h3>
+                        <p>Tools and libraries used in the project.</p>
+
+                        <div class="tech-list">
+                            <span class="tech">Kotlin</span>
+                            <span class="tech">Android Studio</span>
+                            <span class="tech">Jetpack Compose</span>
+                            <span class="tech">Material 3</span>
+                            <span class="tech">PDFBox Android</span>
+                            <span class="tech">DEXLib2</span>
+                            <span class="tech">Gradle</span>
+                            <span class="tech">R8</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="download">
+            <div class="container">
+                <div class="download-panel">
+                    <h2>Get <span class="gradient">Android Security Scanner</span></h2>
+                    <p>
+                        Download version 1.0.0 for compatible Android devices.
+                    </p>
+
+                    <a class="btn btn-primary"
+                        href="https://github.com/sravanibandreddy/android-security-scanner-downloads/releases/download/v1.0.0/app-release.apk">
+                        Download APK
+                    </a>
+
+                    <p class="download-note">
+                        Android APK · GitHub distribution · Version 1.0.0
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section id="contact">
+            <div class="container contact">
+                <div class="section-heading">
+                    <h2>Developer <span class="gradient">Contact</span></h2>
+                    <p>Project developed by Sravani Bandreddy.</p>
+                </div>
+
+                <p>Email:
+                    <a href="mailto:sravanibandreddy30@gmail.com">
+                        sravanibandreddy30@gmail.com
+                    </a>
+                </p>
+
+                <div class="buttons" style="justify-content:center">
+                    <a class="btn btn-secondary" href="https://github.com/sravanibandreddy" target="_blank"
+                        rel="noopener noreferrer">
+                        GitHub Profile
+                    </a>
+
+                    <a class="btn btn-secondary"
+                        href="https://sravanibandreddy.github.io/android-security-scanner-privacy/" target="_blank"
+                        rel="noopener noreferrer">
+                        Privacy Policy
+                    </a>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Sravani Bandreddy · Android Security Scanner</p>
+            <p>Security analysis results are informational and do not guarantee that a file is completely safe.</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>
